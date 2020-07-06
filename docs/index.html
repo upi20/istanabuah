@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Istana Buah</title>
+	<style>
+		body{
+			text-align: center;
+			align-items: center;
+			font-family: sans-serif;
+		}
+
+		#title{ cursor: pointer; }
+
+		table{
+			border-collapse: collapse;
+			margin: auto;
+			margin-top: 10px;
+		}
+
+		table td, table th{
+		  border: 1px solid #ddd;
+		  padding: 0px 8px;
+		  text-align: left;
+		}
+
+		table th{
+			text-align: left;
+			background-color: #4CAF50;
+			color: white;
+			padding-top: "12px"padding-bottom: "12px"text-align: "left"background-color: "#4CAF50" color: "white"
+		}
+		table tr:hover{ background: rgba(0,0,0,0.1); }
+		table tr:nth-child(even){ background: #ddd; }
+		.tleft{ text-align: left; }
+		.tright{ text-align: right;}
+		.tcenter{text-align: center;}
+
+		.form table{
+			margin: auto;
+			margin-top: 20px;
+			text-align: left;
+		}
+		form table tr, form table tr td{
+			background: #fff;
+			border: 0px;
+		}
+	</style>
+</head>
+<body>
+	<h1 id="title">Toko Istana Buah</h1>
+	<h3>Dibuat Oleh: Isep Lutpi Nur</h3>
+	<a href="#" id="m_master_buah">Master Buah</a> |
+	<a href="#" id="m_pengadaan">Pengadaan</a> |
+	<a href="#" id="m_penjualan">Penjualan</a> |
+	<a href="#" id="m_stok_buah">Stok Buah</a>
+	<div id="d_master_buah" style="display: none;"></div>
+	<div id="d_pengadaan" style="display: none;">
+		<form>
+			<table class="form">
+				<tr>
+					<td colspan="3" style="text-align: center;">
+						Tambah Data Pengadaan Buah
+					</td>
+				</tr>
+				<tr>
+					<td>Nama Buah</td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<select id="nama_buah_no_pd">
+							<option value=""></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="nama_suplier">Nama Suplier</label></td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<input type="text"id="nama_pd" maxlength="25">
+					</td>
+				</tr>
+				<tr>
+					<td><label for="jumlah">Jumlah</label></td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<input type="number"id="jumlah_pd" maxlength="6">
+					</td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td style="width: 1px;"></td>
+					<td><button id="simpan_pd">Simpan</button></td>
+				</tr>
+			</table>
+		</form>
+		<br><span style="color: #f00;" id="pemberitahuan_pd"></span><br>
+		<div id="d_pengadaan_main"></div>
+	</div>
+	<div id="d_penjualan" style="display: none;">
+		<form>
+			<table class="form">
+				<tr>
+					<td colspan="3" style="text-align: center;">
+						Tambah Data Penjualan Buah
+					</td>
+				</tr>
+				<tr>
+					<td>Nama Buah</td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<select id="nama_buah_no_pj">
+							<option value=""></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="nama_suplier">Nama Pembeli</label></td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<input type="text"id="nama_pj" maxlength="25">
+					</td>
+				</tr>
+				<tr>
+					<td><label for="jumlah">Jumlah</label></td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<input type="number"id="jumlah_pj" maxlength="6">
+					</td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td style="width: 1px;"></td>
+					<td><button id="simpan_pj">Simpan</button></td>
+				</tr>
+			</table>
+		</form>
+		<br><span style="color: #f00;" id="pemberitahuan_pj"></span><br>
+		<div id="d_penjualan_main"></div>
+	</div>
+	<div id="d_stok_buah" style="display: none;"></div>
+</body>
+</html>
+
+<script>
+// title main
+	const title = getById("title");
+
+// variable data
+	// master buah
+		var mb_nama = [
+			"Jeruk", "Mangga", "Melon",
+			"Semangka", "Durian"
+
+		];
+
+		var mb_harga_beli = [
+			5000, 8000, 15000,
+			13000, 80000
+		];
+		var mb_harga_jual = [
+			6000, 9000, 17000,
+			15000, 100000
+		];
+	// pengadaan
+		var pd_nama = [
+			"sarana buah", "dunia buah",
+			"sarana buah"
+		];
+
+		var pd_buah = [
+			0, 2, 3
+		];
+
+		var pd_qty = [
+			80, 20, 30
+	// pembelian
+		]
+		var pj_nama = [
+			"Fransiska", "Yudi",
+			"Nia"
+		];
+
+		var pj_buah = [
+			0, 3, 0
+		];
+
+		var pj_qty = [
+			20, 5, 30
+		]
+
+// fungsi untuk mengelola page menu
+	function _master_buahFun(x){
+		var no = 0;
+		var html1 = "<table><thead><tr><th>NO</th><th>Nama</th><th>Harga jual</th><th>Harga Beli</th></tr></thead><tbody>";
+		var html2 = "";
+		for (var i = mb_nama.length - 1; i >= 0 ; i--) {
+			html2 = html2 + 
+			"<tr><td>" + ++no
+			+ "</td><td>" +  mb_nama[i]
+			+ "</td><td class='tright'>" + mb_harga_jual[i]
+			+ "</td><td class='tright'>" + mb_harga_beli[i]
+			+ "</td></tr>";
+		}
+		var html3 = "</tbody></table>";
+		htmlById("d" + x, html1 + html2 + html3);
+	}
+
+	function _pengadaanFun(x){
+		var no = 0;
+		var html1 = "<table><thead><tr><th>NO</th><th>Nama Suplier</th><th>Buah</th><th>Harga Satuan</th><th>Qty</th><th>Harga jual</th></tr></thead><tbody>";
+		var html2 = "";
+		for (var i = pd_nama.length - 1; i >= 0; i--) {
+			html2 = html2 +
+			"<tr><td>" + ++no
+			+ "</td><td>" + pd_nama[i]
+			+ "</td><td>" + mb_nama[pd_buah[i]]
+			+ "</td><td class='tright'>" +  mb_harga_jual[pd_buah[i]] 
+			+ "</td><td class='tright'>" + pd_qty[i]
+			+ "</td><td class='tright'>" + (pd_qty[i] * mb_harga_jual[pd_buah[i]])
+			+ "</td></tr>";
+		}
+		var html3 = "</tbody></table>";
+		htmlById("d" + x + "_main", html1 + html2 + html3);
+	}
+
+	function _penjualanFun(x){
+		var no = 0;
+		var html1 = "<table><thead><tr><th>NO</th><th>Nama Suplier</th><th>Buah</th><th>Harga Satuan</th><th>Qty</th><th>Harga jual</th></tr></thead><tbody>";
+		var html2 = "";
+		for (var i = pj_nama.length - 1; i >= 0 ; i--) {
+			html2 = html2 +
+			"<tr><td>" + ++no
+			+ "</td><td>" + pj_nama[i]
+			+ "</td><td>" + mb_nama[pj_buah[i]]
+			+ "</td><td class='tright'>" +  mb_harga_jual[pj_buah[i]] 
+			+ "</td><td class='tright'>" + pj_qty[i]
+			+ "</td><td class='tright'>" + (pj_qty[i] * mb_harga_jual[pj_buah[i]])
+			+ "</td></tr>";
+		}
+		var html3 = "</tbody></table>";
+		htmlById("d" + x + "_main", html1 + html2 + html3);
+	}
+
+	function _stok_buahFun(x){
+		var no = 0;
+		var html1 = "<table><thead><tr><th>NO</th><th>Nama Buah</th><th>Pengadaan</th><th>Penjualan</th></th><th>Stok Akhir</th></tr></thead><tbody>";
+		var html2 = "";
+		for (var i = mb_nama.length - 1; i >= 0; i--) {
+			html2 = html2 + 
+			"<tr><td>" + ++no
+			+ "</td><td>" +  mb_nama[i]
+			+ "</td><td class='tright'>" + zeroHide(hitung_stok(i, "pengadaan"))
+			+ "</td><td class='tright'>" + zeroHide(hitung_stok(i))
+			+ "</td><td class='tright'>" + zeroHide(cekStok(i))
+			+ "</td></tr>";
+		}
+		var html3 = "</tbody></table>";
+		htmlById("d" + x, html1 + html2 + html3);
+	}
+
+	function hitung_stok(x = 0, y = ""){
+		var total = 0;
+		if (y == "pengadaan") {
+			for(var i = 0; i < pd_nama.length; i++){
+				if (pd_buah[i] == x) { total = total + pd_qty[i]; }
+			}
+		}
+		else {
+			for(var i = 0; i < pj_nama.length; i++){
+				if (pj_buah[i] == x) { total = total + pj_qty[i]; }
+			}
+		}
+		return total;
+	}
+
+	function zeroHide(x = 0){
+		if (x == 0) return "";
+		else return x;
+	}
+
+// variable menu
+	const m_master_buah = getById("m_master_buah");
+	const m_pengadaan = getById("m_pengadaan");
+	const m_penjualan = getById("m_penjualan");
+	const m_stok_buah = getById("m_stok_buah");
+	const simpan_pd = getById("simpan_pd");
+	const simpan_pj = getById("simpan_pj");
+
+// variable display
+	var d_master_buah = getById("d_master_buah");
+	var d_pengadaan = getById("d_pengadaan");
+	var d_penjualan = getById("d_penjualan");
+	var d_stok_buah = getById("d_stok_buah");
+
+// variable untuk mengatur dispaly
+	var con_menu = [
+	"_master_buah",
+	"_pengadaan",
+	"_penjualan",
+	"_stok_buah"
+	];
+
+// click
+	m_master_buah.addEventListener("click", function(){ mFun("_master_buah")});
+	m_pengadaan.addEventListener("click", function(){ mFun("_pengadaan")});
+	m_penjualan.addEventListener("click", function(){ mFun("_penjualan")});
+	m_stok_buah.addEventListener("click", function(){ mFun("_stok_buah")});
+	title.addEventListener("click", function(){ visibility()});
+	simpan_pd.addEventListener("click", function(){ simpan_Fun()});
+	simpan_pj.addEventListener("click", function(){ simpan_Fun("pj")});
+
+// controllers
+	function visibility(x = ""){
+		for (var i = con_menu.length - 1; i >= 0; i--) {
+			if(con_menu[i] != x) {
+				getById("d" + con_menu[i]).setAttribute('style', 'display: none;');
+				getById("m" + con_menu[i]).setAttribute('href', '#');
+			}
+			else {
+				getById("d" + con_menu[i]).removeAttribute('style'); 
+				getById("m" + con_menu[i]).removeAttribute('href');
+			}
+		}
+	}
+
+	function mFun(x){
+		visibility(x);
+		     if (x == "_master_buah") _master_buahFun(x);
+		else if (x == "_pengadaan") { _pengadaanFun(x); refreshBuah("pd");}
+		else if (x == "_penjualan") { _penjualanFun(x); refreshBuah("pj");}
+		else if (x == "_stok_buah") _stok_buahFun(x);
+		alertFun();
+	}
+
+	function refreshBuah(x = false){
+		if (x != false) {
+			var html1 = "";
+			for(var i = 0; i < mb_nama.length; i++){
+				html1 = html1 + "<option value=\"" + i + "\">" + mb_nama[i] + "</option>";
+			}
+			htmlById("nama_buah_no_" + x, html1);
+		}
+	}
+
+// javascript query builder
+	function getById(x = false){
+		if (x !=false) {
+			return document.getElementById(x);
+		} else return null;
+	}
+
+	function htmlById(x = false, y = false){
+		if (x !=false && y != false) {
+			return document.getElementById(x).innerHTML = y;
+		} else return null;
+	}
+
+	function valById(x = false, y = false){
+		if (x !=false && y != false) {
+			return document.getElementById(x).value = y;
+		} else return null;
+	}
+
+// simpan data
+	function simpan_Fun(x = "pd"){
+		var buah = getById("nama_buah_no_" + x).value;
+		var nama = getById("nama_" + x).value;
+		var jumlah = getById("jumlah_" + x).value;
+		if (validasiInputKosong(x)){
+			if (x == "pd") {
+				pd_nama.push(nama);
+				pd_buah.push(buah);
+				pd_qty.push(Number(jumlah));
+			} else {
+				pj_nama.push(nama);
+				pj_buah.push(buah);
+				pj_qty.push(Number(jumlah));
+			}
+			getById("nama_buah_no_" + x).value = 0;
+			getById("nama_" + x).value = "";
+			getById("jumlah_" + x).value = "";
+			alertFun(x, "blue", "Berhasil disimpan..!");
+			//reload
+			if (x == "pd") _pengadaanFun("_pengadaan");
+			else _penjualanFun("_penjualan");
+		} else {
+			alertFun(x, "#f00", "Tidak boleh ada kolom yang kosong")
+		}
+
+	}
+
+	function alertFun(x = true, y = "#f00", z = ""){
+		if (x) {
+			getById("pemberitahuan_pd").style.color = y;
+			getById("pemberitahuan_pd").innerHTML = z;
+			getById("pemberitahuan_pj").style.color = y;
+			getById("pemberitahuan_pj").innerHTML = z;
+		} else {
+			getById("pemberitahuan_" + x).style.color = y;
+			getById("pemberitahuan_" + x).innerHTML = z;
+		}
+	}
+
+// validasi simpan penjualan data
+	var id_buah = getById("nama_buah_no_pj");
+	id_buah.addEventListener("click", function(){ validasi() });
+	getById("nama_pj").addEventListener("keyup", function(){ validasi() });
+	getById("jumlah_pj").addEventListener("keyup", function(){ validasi() });
+
+	function validasi(){
+		var inputJml = getById("jumlah_pj").value;
+		var cek = cekStok(id_buah.value) - inputJml;
+		if (cek < 0){
+			alertFun("pj", "#f00", "Stok Kurang Mohon Kurangi Jumlah Pembelian<br>Stok <b>" +
+				mb_nama[id_buah.value] + "</b> Yang tersedia adalah <b>" + cekStok(id_buah.value) + "<b>");
+			simpanButton("pj");
+		} else {
+			alertFun();
+			simpanButton("pj", true);
+		}
+	}
+
+	function cekStok(x){
+		return hitung_stok(x, "pengadaan") - hitung_stok(x);
+	}
+
+	function validasiInputKosong(x){
+		if(
+			getById("nama_" + x).value == "" || 
+			getById("nama_" + x).value == " " || 
+			getById("nama_" + x).value == "0" || 
+			getById("nama_" + x).value <= 0 || 
+			getById("jumlah_" + x).value == "" || 
+			getById("jumlah_" + x).value == " " || 
+			getById("jumlah_" + x).value == "0" || 
+			getById("jumlah_" + x).value <= 0
+				) {
+			return false;
+		} else return true;
+	}
+
+	function simpanButton(y = "pd", x = false){
+		if (x) getById("simpan_" + y).removeAttribute('disabled');
+		else getById("simpan_" + y).setAttribute('disabled', '');
+	}
+</script>
