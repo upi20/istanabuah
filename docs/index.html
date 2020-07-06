@@ -35,12 +35,7 @@
 		.tright{ text-align: right;}
 		.tcenter{text-align: center;}
 
-		.form table{
-			margin: auto;
-			margin-top: 20px;
-			text-align: left;
-		}
-		form table tr, form table tr td{
+		.table table tr, .table table tr td{
 			background: #fff;
 			border: 0px;
 		}
@@ -55,6 +50,7 @@
 	<a href="#" id="m_stok_buah">Stok Buah</a>
 	<div id="d_master_buah" style="display: none;"></div>
 	<div id="d_pengadaan" style="display: none;">
+		<div class="table">
 			<table class="form">
 				<tr>
 					<td colspan="3" style="text-align: center;">
@@ -91,10 +87,12 @@
 					<td><button type="button" id="simpan_pd">Simpan</button></td>
 				</tr>
 			</table>
+		</div>
 		<br><span style="color: #f00;" id="pemberitahuan_pd"></span><br>
 		<div id="d_pengadaan_main"></div>
 	</div>
 	<div id="d_penjualan" style="display: none;">
+		<div class="table">
 			<table class="form">
 				<tr>
 					<td colspan="3" style="text-align: center;">
@@ -131,6 +129,7 @@
 					<td><button type="button" id="simpan_pj">Simpan</button></td>
 				</tr>
 			</table>
+		</div>
 		<br><span style="color: #f00;" id="pemberitahuan_pj"></span><br>
 		<div id="d_penjualan_main"></div>
 	</div>
