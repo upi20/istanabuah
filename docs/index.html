@@ -53,7 +53,45 @@
 	<a href="#" id="m_pengadaan">Pengadaan</a> |
 	<a href="#" id="m_penjualan">Penjualan</a> |
 	<a href="#" id="m_stok_buah">Stok Buah</a>
-	<div id="d_master_buah" style="display: none;"></div>
+	<div id="d_master_buah" style="display: none;">
+			<table class="form">
+				<tr>
+					<td colspan="3" style="text-align: center;">
+						Tambah Data Master Buah
+					</td>
+				</tr>
+				<tr>
+						<form>
+						<td><label for="nama_buah_mb">Nama buah</label></td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<input type="text"id="nama_buah_mb" maxlength="25">
+					</td>
+				</tr>
+				<tr>
+					<td><label for="harga_beli_mb">Harga Beli</label></td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<input type="number"id="harga_beli_mb" maxlength="25">
+					</td>
+				</tr>
+				<tr>
+					<td><label for="harga_jual_mb">Harga Jual</label></td>
+					<td style="width: 1px;">:</td>
+					<td>
+						<input type="number"id="harga_jual_mb" maxlength="6">
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style="width: 1px;"></td>
+					<td><button id="simpan_mb">Simpan</button></td>
+				</tr>
+			</table>
+		<br><span style="color: #f00;" id="pemberitahuan_mb"></span><br>
+		<div id="d_master_buah_main"></div>
+	</div>
 	<div id="d_pengadaan" style="display: none;">
 			<table class="form">
 				<tr>
@@ -191,25 +229,23 @@
 	function _master_buahFun(x){
 		var no = 0;
 		var html1 = "<table><thead><tr><th>NO</th><th>Nama</th><th>Harga jual</th><th>Harga Beli</th></tr></thead><tbody>";
-		var html2 = "";
 		for (var i = mb_nama.length - 1; i >= 0 ; i--) {
-			html2 = html2 + 
+			html1 +=
 			"<tr><td>" + ++no
 			+ "</td><td>" +  mb_nama[i]
 			+ "</td><td class='tright'>" + mb_harga_jual[i]
 			+ "</td><td class='tright'>" + mb_harga_beli[i]
 			+ "</td></tr>";
 		}
-		var html3 = "</tbody></table>";
-		htmlById("d" + x, html1 + html2 + html3);
+		html1 += "</tbody></table>";
+		htmlById("d" + x + "_main", html1);
 	}
 
 	function _pengadaanFun(x){
 		var no = 0;
 		var html1 = "<table><thead><tr><th>NO</th><th>Nama Suplier</th><th>Buah</th><th>Harga Satuan</th><th>Qty</th><th>Harga jual</th></tr></thead><tbody>";
-		var html2 = "";
 		for (var i = pd_nama.length - 1; i >= 0; i--) {
-			html2 = html2 +
+			html1 +=
 			"<tr><td>" + ++no
 			+ "</td><td>" + pd_nama[i]
 			+ "</td><td>" + mb_nama[pd_buah[i]]
@@ -218,16 +254,15 @@
 			+ "</td><td class='tright'>" + (pd_qty[i] * mb_harga_jual[pd_buah[i]])
 			+ "</td></tr>";
 		}
-		var html3 = "</tbody></table>";
-		htmlById("d" + x + "_main", html1 + html2 + html3);
+		html1 += "</tbody></table>";
+		htmlById("d" + x + "_main", html1);
 	}
 
 	function _penjualanFun(x){
 		var no = 0;
 		var html1 = "<table><thead><tr><th>NO</th><th>Nama Suplier</th><th>Buah</th><th>Harga Satuan</th><th>Qty</th><th>Harga jual</th></tr></thead><tbody>";
-		var html2 = "";
 		for (var i = pj_nama.length - 1; i >= 0 ; i--) {
-			html2 = html2 +
+			html1 +=
 			"<tr><td>" + ++no
 			+ "</td><td>" + pj_nama[i]
 			+ "</td><td>" + mb_nama[pj_buah[i]]
@@ -236,16 +271,15 @@
 			+ "</td><td class='tright'>" + (pj_qty[i] * mb_harga_jual[pj_buah[i]])
 			+ "</td></tr>";
 		}
-		var html3 = "</tbody></table>";
-		htmlById("d" + x + "_main", html1 + html2 + html3);
+		html1 += "</tbody></table>";
+		htmlById("d" + x + "_main", html1);
 	}
 
 	function _stok_buahFun(x){
 		var no = 0;
-		var html1 = "<table><thead><tr><th>NO</th><th>Nama Buah</th><th>Pengadaan</th><th>Penjualan</th></th><th>Stok Akhir</th></tr></thead><tbody>";
-		var html2 = "";
+		var html1 = "<br><br><table><thead><tr><th>NO</th><th>Nama Buah</th><th>Pengadaan</th><th>Penjualan</th></th><th>Stok Akhir</th></tr></thead><tbody>";
 		for (var i = mb_nama.length - 1; i >= 0; i--) {
-			html2 = html2 + 
+			html1 +=
 			"<tr><td>" + ++no
 			+ "</td><td>" +  mb_nama[i]
 			+ "</td><td class='tright'>" + zeroHide(hitung_stok(i, "pengadaan"))
@@ -253,8 +287,8 @@
 			+ "</td><td class='tright'>" + zeroHide(cekStok(i))
 			+ "</td></tr>";
 		}
-		var html3 = "</tbody></table>";
-		htmlById("d" + x, html1 + html2 + html3);
+		html1 += "</tbody></table>";
+		htmlById("d" + x, html1);
 	}
 
 	function hitung_stok(x = 0, y = ""){
@@ -300,13 +334,13 @@
 	];
 
 // click
-	m_master_buah.addEventListener("click", function(){ mFun("_master_buah")});
-	m_pengadaan.addEventListener("click", function(){ mFun("_pengadaan")});
-	m_penjualan.addEventListener("click", function(){ mFun("_penjualan")});
-	m_stok_buah.addEventListener("click", function(){ mFun("_stok_buah")});
-	title.addEventListener("click", function(){ visibility()});
-	simpan_pd.addEventListener("click", function(){ simpan_Fun()});
-	simpan_pj.addEventListener("click", function(){ simpan_Fun("pj")});
+	m_master_buah.addEventListener("click", function(){ mFun("_master_buah"); alertMb();});
+	m_pengadaan.addEventListener("click", function(){ mFun("_pengadaan");});
+	m_penjualan.addEventListener("click", function(){ mFun("_penjualan"); validasiPj();});
+	m_stok_buah.addEventListener("click", function(){ mFun("_stok_buah");});
+	title.addEventListener("click", function(){ visibility();});
+	simpan_pd.addEventListener("click", function(){ simpan_Fun();});
+	simpan_pj.addEventListener("click", function(){ simpan_Fun("pj");});
 
 // controllers
 	function visibility(x = ""){
@@ -335,7 +369,7 @@
 		if (x != false) {
 			var html1 = "";
 			for(var i = 0; i < mb_nama.length; i++){
-				html1 = html1 + "<option value=\"" + i + "\">" + mb_nama[i] + "</option>";
+				html1 += "<option value=\"" + i + "\">" + mb_nama[i] + "</option>";
 			}
 			htmlById("nama_buah_no_" + x, html1);
 		}
@@ -365,7 +399,8 @@
 		var buah = getById("nama_buah_no_" + x).value;
 		var nama = getById("nama_" + x).value;
 		var jumlah = getById("jumlah_" + x).value;
-		if (validasiInputKosong(x)){
+		if (validasiInputKosong("nama_" + x) || validasiInputKosong("jumlah_" + x)){
+			console.log("false ajig")
 			if (x == "pd") {
 				pd_nama.push(nama);
 				pd_buah.push(buah);
@@ -378,14 +413,16 @@
 			getById("nama_buah_no_" + x).value = 0;
 			getById("nama_" + x).value = "";
 			getById("jumlah_" + x).value = "";
-			alertFun(x, "blue", "Berhasil disimpan..!");
+			alertFun(x, "#00f", "Berhasil disimpan..!");
 			//reload
 			if (x == "pd") _pengadaanFun("_pengadaan");
 			else _penjualanFun("_penjualan");
 		} else {
-			alertFun(x, "#f00", "Tidak boleh ada kolom yang kosong")
+			alertFun(x, "#f00", "Tidak boleh ada kolom yang kosong atau nol")
 		}
-
+		console.log("nilai 1 = " +validasiInputKosong("nama_" + x));
+		console.log("nilai 2 = " +validasiInputKosong("jumlah_" + x));
+		console.log("nilai 1 OR 2 = " +validasiInputKosong("nama_" + x) || validasiInputKosong("jumlah_" + x));
 	}
 
 	function alertFun(x = true, y = "#f00", z = ""){
@@ -402,11 +439,11 @@
 
 // validasi simpan penjualan data
 	var id_buah = getById("nama_buah_no_pj");
-	id_buah.addEventListener("click", function(){ validasi() });
-	getById("nama_pj").addEventListener("keyup", function(){ validasi() });
-	getById("jumlah_pj").addEventListener("keyup", function(){ validasi() });
+	id_buah.addEventListener("click", function(){ validasiPj() });
+	getById("nama_pj").addEventListener("keyup", function(){ validasiPj() });
+	getById("jumlah_pj").addEventListener("keyup", function(){ validasiPj() });
 
-	function validasi(){
+	function validasiPj(){
 		var inputJml = getById("jumlah_pj").value;
 		var cek = cekStok(id_buah.value) - inputJml;
 		if (cek < 0){
@@ -414,10 +451,12 @@
 				mb_nama[id_buah.value] + "</b> Yang tersedia adalah <b>" + cekStok(id_buah.value) + "<b>");
 			simpanButton("pj");
 		} else {
-			alertFun();
-			simpanButton("pj", true);
+				alertFun();
+				simpanButton("pj", true);
 		}
 	}
+
+
 
 	function cekStok(x){
 		return hitung_stok(x, "pengadaan") - hitung_stok(x);
@@ -425,14 +464,10 @@
 
 	function validasiInputKosong(x){
 		if(
-			getById("nama_" + x).value == "" || 
-			getById("nama_" + x).value == " " || 
-			getById("nama_" + x).value == "0" || 
-			getById("nama_" + x).value <= 0 || 
-			getById("jumlah_" + x).value == "" || 
-			getById("jumlah_" + x).value == " " || 
-			getById("jumlah_" + x).value == "0" || 
-			getById("jumlah_" + x).value <= 0
+			getById(x).value == "" || 
+			getById(x).value == " " || 
+			getById(x).value == "0" || 
+			getById(x).value <= 0
 				) {
 			return false;
 		} else return true;
@@ -442,4 +477,82 @@
 		if (x) getById("simpan_" + y).removeAttribute('disabled');
 		else getById("simpan_" + y).setAttribute('disabled', '');
 	}
+
+// Simpan data tambah data master buah
+	// variable
+		var nama_buah_mb = getById("nama_buah_mb");
+		var harga_beli_mb = getById("harga_beli_mb");
+		var harga_jual_mb = getById("harga_jual_mb");
+		var simpan_mb = getById("simpan_mb");
+
+	// action
+	nama_buah_mb.addEventListener("keyup", function(){ validasiMb(); });
+	harga_beli_mb.addEventListener("keyup", function(){ validasiMb(); });
+	harga_jual_mb.addEventListener("keyup", function(){ validasiMb(); });
+	simpan_mb.addEventListener("click", function(){ simpanMb(); });
+
+	function simpanMb(){
+		if (validasiMb()) {
+			mb_nama.push(nama_buah_mb.value);
+			mb_harga_beli.push(Number(harga_beli_mb.value));
+			mb_harga_jual.push(Number(harga_jual_mb.value));
+			resetInMb();
+			_master_buahFun("_master_buah");
+			alertMb("Data berhasil ditambahkan..!", "#00f");
+
+		}
+	}
+
+	function validasiMb(){
+		simpanButton("mb");
+		if (validasiInputKosong("nama_buah_mb") || validasiInputKosong("harga_beli_mb") || validasiInputKosong("harga_jual_mb")) {
+			if (cekBuah()) {
+				if (cekHargaBuah()) {
+					simpanButton("mb", true);
+					alertMb();
+					return true;
+				} else {
+					simpanButton("mb");
+					alertMb("Harga jual harus lebih tinggi dari harga beli..!");
+				}
+			} else {
+				simpanButton("mb");
+				alertMb("Nama Buah sudah ada..!");
+			}
+		} else {
+			simpanButton("mb");
+			alertMb("Kolom harus di isi semua..!");
+		}
+	}
+
+	function cekBuah(){
+		var x = nama_buah_mb.value;
+		var cek = 0;
+		for(var i = 0; i < mb_nama.length; i++){
+			if (mb_nama[i].toLowerCase() == x.toLowerCase()) cek++;
+		}
+		if (cek > 0) return false;
+		else return true;
+	}
+
+	function cekHargaBuah(){
+		var x = Number(harga_jual_mb.value);
+		var y = Number(harga_beli_mb.value);
+		if (x > 0 && y > 0) {
+			if (x > y) return true;
+			else return false;
+		} else return false;
+	}
+
+	function resetInMb(){
+		nama_buah_mb.value = "";
+		harga_beli_mb.value = "";
+		harga_jual_mb.value = "";
+	}
+
+	function alertMb(x = "", y = "#f00") {
+		getById("pemberitahuan_mb").style.color = y;
+		getById("pemberitahuan_mb").innerHTML = x;
+	}
+// 
 </script>
