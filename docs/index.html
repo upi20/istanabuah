@@ -399,8 +399,7 @@
 		var buah = getById("nama_buah_no_" + x).value;
 		var nama = getById("nama_" + x).value;
 		var jumlah = getById("jumlah_" + x).value;
-		if (validasiInputKosong("nama_" + x) || validasiInputKosong("jumlah_" + x)){
-			console.log("false ajig")
+		if (validasiInputKosong("nama_" + x) && validasiInputKosong("jumlah_" + x)){
 			if (x == "pd") {
 				pd_nama.push(nama);
 				pd_buah.push(buah);
@@ -420,9 +419,6 @@
 		} else {
 			alertFun(x, "#f00", "Tidak boleh ada kolom yang kosong atau nol")
 		}
-		console.log("nilai 1 = " +validasiInputKosong("nama_" + x));
-		console.log("nilai 2 = " +validasiInputKosong("jumlah_" + x));
-		console.log("nilai 1 OR 2 = " +validasiInputKosong("nama_" + x) || validasiInputKosong("jumlah_" + x));
 	}
 
 	function alertFun(x = true, y = "#f00", z = ""){
