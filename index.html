@@ -290,6 +290,7 @@
 <script>
 // title main
 	const title = getById("title");
+	var temp = "";
 
 // variable data
 	// master buah
@@ -448,13 +449,13 @@
 	];
 
 // click
-	m_master_buah.addEventListener("click", function(){ mFun("_master_buah"); alertMb();});
-	m_pengadaan.addEventListener("click", function(){ mFun("_pengadaan");});
-	m_penjualan.addEventListener("click", function(){ mFun("_penjualan"); validasiPj();});
-	m_stok_buah.addEventListener("click", function(){ mFun("_stok_buah");});
-	title.addEventListener("click", function(){ visibility();});
-	simpan_pd.addEventListener("click", function(){ simpan_Fun();});
-	simpan_pj.addEventListener("click", function(){ simpan_Fun("pj");});
+	m_master_buah.addEventListener("click", function(){ mFun("_master_buah"); });
+	m_pengadaan.addEventListener("click", function(){ mFun("_pengadaan"); });
+	m_penjualan.addEventListener("click", function(){ mFun("_penjualan"); });
+	m_stok_buah.addEventListener("click", function(){ mFun("_stok_buah"); });
+	title.addEventListener("click", function(){ visibility(); });
+	simpan_pd.addEventListener("click", function(){ simpan_Fun(); });
+	simpan_pj.addEventListener("click", function(){ simpan_Fun("pj"); });
 
 // controllers
 	function visibility(x = ""){
@@ -472,11 +473,26 @@
 
 	function mFun(x){
 		visibility(x);
-		     if (x == "_master_buah") _master_buahFun(x);
-		else if (x == "_pengadaan") { _pengadaanFun(x); refreshBuah("pd"); refreshBuah("pd_ubah");}
-		else if (x == "_penjualan") { _penjualanFun(x); refreshBuah("pj"); refreshBuah("pj_ubah")}
-		else if (x == "_stok_buah") _stok_buahFun(x);
-		alertFun();
+		if (x == "_master_buah") {
+			_master_buahFun(x);
+			hideMenu("d_master_buah_ubah");
+			alertMb();
+		} else if (x == "_pengadaan") { 
+			_pengadaanFun(x);
+			refreshBuah("pd");
+			refreshBuah("pd_ubah");
+			hideMenu("d_pengadaan_ubah");
+		} else if (x == "_penjualan") {
+			_penjualanFun(x);
+			refreshBuah("pj");
+			refreshBuah("pj_ubah");
+			validasiPj();
+			hideMenu("d_penjualan_ubah");
+		}
+		else if (x == "_stok_buah") {
+			_stok_buahFun(x);
+			alertFun();
+		}
 	}
 
 	function refreshBuah(x = false){
@@ -515,18 +531,22 @@
 				pd_nama.push(nama);
 				pd_buah.push(buah);
 				pd_qty.push(Number(jumlah));
-			} else {
+			} else if (x == "pj"){
 				pj_nama.push(nama);
 				pj_buah.push(buah);
 				pj_qty.push(Number(jumlah));
+			} else if (x == "pd_ubah"){
+				ubahDataPdAct();
+			} else if (x == "pj_ubah"){
+				ubahDataPjAct();
 			}
 			getById("nama_buah_no_" + x).value = 0;
 			getById("nama_" + x).value = "";
 			getById("jumlah_" + x).value = "";
 			alertFun(x, "#00f", "Berhasil disimpan..!");
 			//reload
-			if (x == "pd") _pengadaanFun("_pengadaan");
-			else _penjualanFun("_penjualan");
+			if (x == "pd" || x == "pd_ubah") mFun("_pengadaan");
+			else mFun("_penjualan");
 		} else {
 			alertFun(x, "#f00", "Tidak boleh ada kolom yang kosong atau nol");
 		}
@@ -545,21 +565,21 @@
 	}
 
 // validasi simpan penjualan data
-	var id_buah = getById("nama_buah_no_pj");
-	id_buah.addEventListener("click", function(){ validasiPj() });
+	getById("nama_buah_no_pj").addEventListener("click", function(){ validasiPj() });
 	getById("nama_pj").addEventListener("keyup", function(){ validasiPj() });
 	getById("jumlah_pj").addEventListener("keyup", function(){ validasiPj() });
 
-	function validasiPj(){
-		var inputJml = getById("jumlah_pj").value;
+	function validasiPj(x = ""){
+		var id_buah = getById("nama_buah_no_pj" + x);
+		var inputJml = getById("jumlah_pj" + x).value;
 		var cek = cekStok(id_buah.value) - inputJml;
 		if (cek < 0){
 			alertFun("pj", "#f00", "Stok Kurang Mohon Kurangi Jumlah penjualan<br>Stok <b>" +
 				mb_nama[id_buah.value] + "</b> Yang tersedia adalah <b>" + cekStok(id_buah.value) + "<b>");
 			simpanButton("pj");
 		} else {
-				alertFun();
-				simpanButton("pj", true);
+			alertFun();
+			simpanButton("pj", true);
 		}
 	}
 
@@ -610,40 +630,55 @@
 		}
 	}
 
-	function validasiMb(){
-		simpanButton("mb");
-		if (validasiInputKosong("nama_buah_mb") || validasiInputKosong("harga_beli_mb") || validasiInputKosong("harga_jual_mb")) {
-			if (cekBuah()) {
-				if (cekHargaBuah()) {
-					simpanButton("mb", true);
+	function validasiMb(x = ""){
+		simpanButton("mb" + x);
+		if (validasiInputKosong("nama_buah_mb" + x) || validasiInputKosong("harga_beli_mb" + x) || validasiInputKosong("harga_jual_mb" + x)) {
+			if (cekBuah(x)) {
+				if (cekHargaBuah(x)) {
+					simpanButton("mb" + x, true);
 					alertMb();
 					return true;
 				} else {
-					simpanButton("mb");
+					simpanButton("mb" + x);
 					alertMb("Harga jual harus lebih tinggi dari harga beli..!");
 				}
 			} else {
-				simpanButton("mb");
+				simpanButton("mb" + x);
 				alertMb("Nama Buah sudah ada..!");
 			}
 		} else {
-			simpanButton("mb");
+			simpanButton("mb" + x);
 			alertMb("Kolom harus di isi semua..!");
 		}
 	}
 
-	function cekBuah(){
-		var x = nama_buah_mb.value, cek = 0;
-		for(var i = 0; i < mb_nama.length; i++){
-			if (mb_nama[i].toLowerCase() == x.toLowerCase()) cek++;
+	function cekBuah(x){
+		if (x == "") {
+			var x = nama_buah_mb.value, cek = 0;
+			for(var i = 0; i < mb_nama.length; i++){
+				if (mb_nama[i].toLowerCase() == x.toLowerCase()) cek++;
+			}
+			cek = (cek > 0) ? false : true;
+			return cek;
+		} else {
+			var x = nama_buah_mb_ubah.value, cek = 0;
+			for(var i = 0; i < mb_nama.length; i++){
+				if (i == getById("id_mb_ubah").value) continue;
+				if (mb_nama[i].toLowerCase() == x.toLowerCase()) cek++;
+			}
+			cek = (cek > 0) ? false : true;
+			return cek;	
 		}
-		cek = (cek > 0) ? false : true;
-		return cek;
 	}
 
-	function cekHargaBuah(){
-		var x = Number(harga_jual_mb.value);
-		var y = Number(harga_beli_mb.value);
+	function cekHargaBuah(x){
+		if (x == "") {
+			var x = Number(harga_jual_mb.value);
+			var y = Number(harga_beli_mb.value);
+		} else {
+			var x = Number(harga_jual_mb_ubah.value);
+			var y = Number(harga_beli_mb_ubah.value);
+		}
 		if (x > 0 && y > 0) {
 			if (x > y) return true;
 			else return false;
@@ -660,12 +695,22 @@
 		getById("pemberitahuan_mb").style.color = y;
 		getById("pemberitahuan_mb").innerHTML = x;
 	}
+
+
 // hapus data
 	function hapusDataMb(x){
+		alertMb("<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain."
+			+ "<br>Apakah anda yakin data <b>" + mb_nama[x] + "</b> Akan dihapus..? <br>"
+			+ "<a href=\"#\" onclick=\"hapusDataMbAct(" + x + ")\">Ya<a> Atau "
+			+ "<a href=\"#\" onclick=\"mFun('_master_buah')\">Tidak<a>");
+		temp = mb_nama[x];
+	}
+	function hapusDataMbAct(x){
 		mb_nama = hapusArr(mb_nama, x);
 		mb_harga_jual = hapusArr(mb_harga_jual, x);
 		mb_harga_beli = hapusArr(mb_harga_beli, x);
 		mFun("_master_buah");
+		alertMb("Sukses.. !, Data <b>" + temp + "</b> Berhasil dihapus..!", "#00f");
 	}
 
 	function hapusDataPd(x){
@@ -679,7 +724,6 @@
 		pj_buah = hapusArr(pj_buah, x);
 		pj_qty = hapusArr(pj_qty, x);
 		pj_nama = hapusArr(pj_nama, x);
-		mFun("_penjualan");
 	}
 
 	function hapusArr(x, no) {
@@ -689,6 +733,14 @@
 			newArr.push(x[i]);
 		}
 		return newArr;
+	}
+
+	function showMenu(x){
+		getById(x).removeAttribute('style'); 
+	}
+
+	function hideMenu(x){
+		getById(x).setAttribute('style', 'display: none;');
 	}
 	// konfirmasi ketika pengandaan buah dihapus yang sudah ada pembelinya
 	// konfirmasi master buah ketika dihapus yang buahnya sudah ada pembelinya
@@ -700,15 +752,24 @@
 	var harga_jual_mb_ubah = getById("harga_jual_mb_ubah");
 	var harga_beli_mb_ubah = getById("harga_beli_mb_ubah");
 	var id_mb_ubah = getById("id_mb_ubah");
-	var kembali_mb_ubah = getById("kembali_mb_ubah");
-	// harus ditambahkan validasi terlebih dahulu
-	getById("simpan_mb_ubah").addEventListener("click", function() {ubahDataMbAct();});
+	getById("kembali_mb_ubah").addEventListener("click", function() {
+		showMenu("d_master_buah_tambah");
+		hideMenu("d_master_buah_ubah");
+		alertMb();
+	});
+	getById("simpan_mb_ubah").addEventListener("click", function() { ubahDataMbAct();});
+	nama_buah_mb_ubah.addEventListener("keyup", function(){ validasiMb("_ubah"); });
+	harga_jual_mb_ubah.addEventListener("keyup", function(){ validasiMb("_ubah"); });
+	harga_beli_mb_ubah.addEventListener("keyup", function(){ validasiMb("_ubah"); });
 	function ubahDataMb(x){
 		d_master_buah_ubah_title.innerHTML = "Ubah data <b>" + mb_nama[x] + "</b>";
 		nama_buah_mb_ubah.value = mb_nama[x];
 		harga_jual_mb_ubah.value = mb_harga_jual[x];
 		harga_beli_mb_ubah.value = mb_harga_beli[x];
 		id_mb_ubah.value = x;
+		showMenu("d_master_buah_ubah");
+		hideMenu("d_master_buah_tambah");
+		alertMb("<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain.");
 	}
 	// setelah di tambahkan kolom input harus kosong
 	function ubahDataMbAct(){
@@ -716,6 +777,7 @@
 		mb_harga_jual[id_mb_ubah.value] = harga_jual_mb_ubah.value;
 		mb_harga_beli[id_mb_ubah.value] = harga_beli_mb_ubah.value;
 		mFun("_master_buah");
+		showMenu("d_master_buah_tambah");
 	}
 
 	// Pengadaan
@@ -724,24 +786,27 @@
 	var nama_pd_ubah = getById("nama_pd_ubah");
 	var jumlah_pd_ubah = getById("jumlah_pd_ubah");
 	var id_pd_ubah = getById("id_pd_ubah");
-	var kembali_pd_ubah = getById("kembali_pd_ubah");
-	getById("simpan_pd_ubah").addEventListener("click", function() {ubahDataPdAct();});
+	getById("kembali_pd_ubah").addEventListener("click", function() {
+		showMenu("d_pengadaan_tambah");
+		hideMenu("d_pengadaan_ubah");
+		alertFun();
+	});
+	getById("simpan_pd_ubah").addEventListener("click", function() {simpan_Fun("pd_ubah");});
 	function ubahDataPd(x){
 		d_pengadaan_ubah_title.innerHTML = "Ubah data <b>" + pd_nama[x] + "</b>";
 		nama_buah_no_pd_ubah.value = pd_buah[x];
 		nama_pd_ubah.value = pd_nama[x];
 		jumlah_pd_ubah.value = Number(pd_qty[x]);
 		id_pd_ubah.value = x;
+		showMenu("d_pengadaan_ubah");
+		hideMenu("d_pengadaan_tambah");
 	}
 	// display none untuk menu ubah pengadaan
 	function ubahDataPdAct(){
 		pd_buah[id_pd_ubah.value] = nama_buah_no_pd_ubah.value;
 		pd_nama[id_pd_ubah.value] = nama_pd_ubah.value;
 		pd_qty[id_pd_ubah.value] = Number(jumlah_pd_ubah.value);
-		mFun("_pengadaan");
-		nama_pd_ubah.value = "";
-		jumlah_pd_ubah.value = "";
-		id_pd_ubah.value = "";
+		showMenu("d_pengadaan_tambah");
 	}
 
 	// Pengadaan
@@ -750,14 +815,25 @@
 	var nama_pj_ubah = getById("nama_pj_ubah");
 	var jumlah_pj_ubah = getById("jumlah_pj_ubah");
 	var id_pj_ubah = getById("id_pj_ubah");
-	var kembali_pj_ubah = getById("kembali_pj_ubah");
-	getById("simpan_pj_ubah").addEventListener("click", function() {ubahDataPjAct();});
+	nama_buah_no_pj_ubah.addEventListener("click", function(){validasiPj("_ubah");});
+	nama_pj_ubah.addEventListener("keyup", function(){validasiPj("_ubah");});
+	jumlah_pj_ubah.addEventListener("keyup", function(){validasiPj("_ubah");});
+	getById("kembali_pj_ubah").addEventListener("click", function() {
+		showMenu("d_penjualan_tambah");
+		hideMenu("d_penjualan_ubah");
+		mFun("_penjualan");
+		alertFun();
+	});
+	getById("simpan_pj_ubah").addEventListener("click", function() {simpan_Fun("pj_ubah");});
 	function ubahDataPj(x){
 		d_penjualan_ubah_title.innerHTML = "Ubah data <b>" + pj_nama[x] + "</b>";
 		nama_buah_no_pj_ubah.value = pj_buah[x];
 		nama_pj_ubah.value = pj_nama[x];
 		jumlah_pj_ubah.value = Number(pj_qty[x]);
 		id_pj_ubah.value = x;
+		hideMenu("d_penjualan_tambah");
+		showMenu("d_penjualan_ubah");
+		alertFun();
 	}
 	// display none untuk menu ubah penjualan
 	function ubahDataPjAct(){
@@ -765,8 +841,6 @@
 		pj_nama[id_pj_ubah.value] = nama_pj_ubah.value;
 		pj_qty[id_pj_ubah.value] = Number(jumlah_pj_ubah.value);
 		mFun("_penjualan");
-		nama_pj_ubah.value = "";
-		jumlah_pj_ubah.value = "";
-		id_pj_ubah.value = "";
+		showMenu("d_penjualan_tambah");
 	}
 </script>
