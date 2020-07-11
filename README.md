@@ -24,11 +24,14 @@ https://iseplutpinur.github.io/istanabuah/
 
 ### Pengadaan
 - Tambah Data
-	- 
+	- Nama Suplier Tidak boleh kosong
+	- Jumlah Tidak boleh kosong
 - Ubah Data
-	- 
+	- Nama tidak boleh
+	- Data yang dirubah akan merubah data pada tabel lain
+	- Jumlah tidak boleh kurang dari stok sehngga stok menjadi minus
 - Hapus Data
-	- 
+	- Data tidak bisa dihapus apabila data yang dihapus akan menjadikan stok minus
 - Lihat Data
 	- Menampilkan data dalam bentuk tabel
 
@@ -38,11 +41,12 @@ https://iseplutpinur.github.io/istanabuah/
 
 ### Penjualan
 - Tambah Data
-	- 
+	- Menambah data penjualan
+	- Jumlah tidak boleh lebih dari stok yang sudah ada
 - Ubah Data
-	- 
+	- Jumlah tidak boleh lebih dari stok yang sudah ada
 - Hapus Data
-	- 
+	- Menghapus data akan mengembalikan jumlah stok
 - Lihat Data
 	- Menampilkan data dalam bentuk tabel
 
@@ -51,12 +55,6 @@ https://iseplutpinur.github.io/istanabuah/
 
 
 ### Stok Buah
-- Tambah Data
-	- 
-- Ubah Data
-	- 
-- Hapus Data
-	- 
 - Lihat Data
 	- Menampilkan data dalam bentuk tabel
 
