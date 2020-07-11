@@ -990,25 +990,38 @@
 	getById("simpan_pd_ubah").addEventListener("click", function() {simpan_Fun("pd_ubah");});
 	function ubahDataPd(x){
 		if (relationPdHapus(x) >= 0) {
-			// simpanButton("pd_ubah", true);
 			nama_buah_no_pd_ubah.removeAttribute('disabled');
 			alertFun("pd");
 		} else {
-			// simpanButton("pd_ubah");
 			nama_buah_no_pd_ubah.setAttribute('disabled', '');
-			console.log();
 			alertFun("pd","#f44336","Nama buah tidak bisa diubah karena, <br>akan membuat stok buah tersebut menjadi minus");
 		}
-		// alertFun();
 		d_pengadaan_ubah_title.innerHTML = "Ubah data <b>" + pd_nama[x] + "</b>";
 		nama_buah_no_pd_ubah.value = pd_buah[x];
 		nama_pd_ubah.value = pd_nama[x];
 		jumlah_pd_ubah.value = Number(pd_qty[x]);
 		id_pd_ubah.value = x;
+		temp[0] = Math.abs(relationPdHapus(x));
+		temp[1] = Number(jumlah_pd_ubah.value);
 		showMenu("d_pengadaan_ubah");
 		hideMenu("d_pengadaan_tambah");
 	}
 
+	nama_buah_no_pd_ubah.addEventListener("change", function(){ validasiPdUbah();});
+	nama_pd_ubah.addEventListener("keyup", function(){ validasiPdUbah();});
+	jumlah_pd_ubah.addEventListener("keyup", function(){ validasiPdUbah();});
+	nama_buah_no_pd_ubah.addEventListener("click", function(){ validasiPdUbah();});
+	nama_pd_ubah.addEventListener("click", function(){ validasiPdUbah();});
+	jumlah_pd_ubah.addEventListener("click", function(){ validasiPdUbah();});
+
+	function validasiPdUbah(x){
+		if (Number(jumlah_pd_ubah.value) < temp[0]) {
+			alertFun("pd","#f44336", "Jumlah minimal " + temp[0]);
+			simpanButton("pd_ubah");
+		} else {
+			simpanButton("pd_ubah", true);
+		}
+	}
 	
 	function ubahDataPdAct(){
 		pd_buah[id_pd_ubah.value] = nama_buah_no_pd_ubah.value;
