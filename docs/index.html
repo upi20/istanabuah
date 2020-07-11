@@ -820,12 +820,17 @@
 			mb_harga_jual = hapusArr(mb_harga_jual, x);
 			mb_harga_beli = hapusArr(mb_harga_beli, x);
 			mFun("_master_buah");
-			alertMb("Sukses.. !, Data <b>" + temp[0] + "</b> Berhasil dihapus..!", "#008CBA");
+			var html = "Sukses.. !, Data <b>" + temp[0] + "</b> Berhasil dihapus..!<br>";
+			if (temp[3] > 0) html += temp[3] + " Data <b>Pengadaan</b> ";
+			if (temp[3] > 0 && temp[4] > 0) html += "dan ";
+			if (temp[4] > 0) html += temp[4] + " Data <b>Penjualan</b> ";
+			if (temp[3] > 0 || temp[4] > 0)html += "Ikut terhapus";
+			alertMb(html, "#008CBA");
 		} else {
 			temp[0] = mb_nama[x];
 			temp[1] = x;
 			alertMb("<b>Peringatan..!</b>, Mengubah data ini akan mengubah data pada tabel lain."
-				+ "<br>Data <b>" + mb_nama[x] + "</b> Pada tabel <b>Pengadaan</b> dan <b>Penjualan</b> Akan ikut terhapus"
+				+ "<br>Data <b>" + mb_nama[x] + "</b> Pada tabel <b>Pengadaan</b> dan <b>Penjualan</b> Akan ikut terhapus."
 				+ "<br>Apakah anda yakin data <b>" + mb_nama[x] + "</b> Akan dihapus..? <br>"
 				+ "<button class=\"btn btn-merah\"onclick=\"hapusDataMb(" + temp[1] + ",'hapusDataMbAct',)\">Ya</button> Atau "
 				+ "<button class=\"btn btn-hitam\"onclick=\"mFun('_master_buah')\">Tidak</button>");
@@ -833,11 +838,13 @@
 	}
 
 	function relationMbHapus(x){
+		temp[3] = 0;
 		for (var i = 0; i < pd_buah.length; i++){
 			if (pd_buah[i] == x ) {
 				pd_buah = hapusArr(pd_buah, i);
 				pd_qty = hapusArr(pd_qty, i);
 				pd_nama = hapusArr(pd_nama, i);
+				temp[3]++;
 			}
 		}
 		for (var i = 0; i < pd_buah.length; i++){
@@ -845,11 +852,13 @@
 				pd_buah[i] -= 1;
 			}
 		}
+		temp[4] = 0;
 		for (var i = 0; i < pj_buah.length; i++){
 			if (pj_buah[i] == x ) {
 				pj_buah = hapusArr(pj_buah, i);
 				pj_qty = hapusArr(pj_qty, i);
 				pj_nama = hapusArr(pj_nama, i);
+				temp[4]++;
 			}
 		}
 		for (var i = 0; i < pj_buah.length; i++){
