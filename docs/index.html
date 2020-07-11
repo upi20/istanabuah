@@ -815,6 +815,7 @@
 // hapus data
 	function hapusDataMb(x, y = ""){
 		if (y == "hapusDataMbAct"){
+			relationMbHapus(x);
 			mb_nama = hapusArr(mb_nama, x);
 			mb_harga_jual = hapusArr(mb_harga_jual, x);
 			mb_harga_beli = hapusArr(mb_harga_beli, x);
@@ -823,10 +824,38 @@
 		} else {
 			temp[0] = mb_nama[x];
 			temp[1] = x;
-			alertMb("<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain."
+			alertMb("<b>Peringatan..!</b>, Mengubah data ini akan mengubah data pada tabel lain."
+				+ "<br>Data <b>" + mb_nama[x] + "</b> Pada tabel <b>Pengadaan</b> dan <b>Penjualan</b> Akan ikut terhapus"
 				+ "<br>Apakah anda yakin data <b>" + mb_nama[x] + "</b> Akan dihapus..? <br>"
 				+ "<button class=\"btn btn-merah\"onclick=\"hapusDataMb(" + temp[1] + ",'hapusDataMbAct',)\">Ya</button> Atau "
 				+ "<button class=\"btn btn-hitam\"onclick=\"mFun('_master_buah')\">Tidak</button>");
+		}
+	}
+
+	function relationMbHapus(x){
+		for (var i = 0; i < pd_buah.length; i++){
+			if (pd_buah[i] == x ) {
+				pd_buah = hapusArr(pd_buah, i);
+				pd_qty = hapusArr(pd_qty, i);
+				pd_nama = hapusArr(pd_nama, i);
+			}
+		}
+		for (var i = 0; i < pd_buah.length; i++){
+			if (pd_buah[i] > x ) {
+				pd_buah[i] -= 1;
+			}
+		}
+		for (var i = 0; i < pj_buah.length; i++){
+			if (pj_buah[i] == x ) {
+				pj_buah = hapusArr(pj_buah, i);
+				pj_qty = hapusArr(pj_qty, i);
+				pj_nama = hapusArr(pj_nama, i);
+			}
+		}
+		for (var i = 0; i < pj_buah.length; i++){
+			if (pj_buah[i] > x ) {
+				pj_buah[i] -= 1;
+			}
 		}
 	}
 
