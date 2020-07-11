@@ -18,7 +18,7 @@ https://iseplutpinur.github.io/istanabuah/
 - Lihat Data
 	- Menampilkan data dalam bentuk tabel
 
-<img src="docs/Master_Buah.png" style="zoom: 67%;" />
+<img src="docs/Master_Buah.png"/>
 
 
 
@@ -35,7 +35,7 @@ https://iseplutpinur.github.io/istanabuah/
 - Lihat Data
 	- Menampilkan data dalam bentuk tabel
 
-<img src="docs/Pengadaan.png" style="zoom: 67%;" />
+<img src="docs/Pengadaan.png"/>
 
 
 
@@ -50,7 +50,7 @@ https://iseplutpinur.github.io/istanabuah/
 - Lihat Data
 	- Menampilkan data dalam bentuk tabel
 
-<img src="docs/Penjualan.png" style="zoom: 67%;" />
+<img src="docs/Penjualan.png"/>
 
 
 
@@ -58,4 +58,4 @@ https://iseplutpinur.github.io/istanabuah/
 - Lihat Data
 	- Menampilkan data dalam bentuk tabel
 
-<img src="docs/Stok_buah.png" style="zoom: 67%;" />
+<img src="docs/Stok_buah.png"/>
