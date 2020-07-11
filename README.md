@@ -3,7 +3,7 @@ Aplikasi sangat sederhana ini bertujuan untuk mengelola toko buah, menggunakan 1
 
 https://iseplutpinur.github.io/istanabuah/
 
-### Master Buah
+## Master Buah
 - Tambah Data
 	- Nama tidak boleh sama dengan data yang sudah ada
 	- Harga jual dan beli tidak boleh nol, kurang dari nol dan kosong
@@ -22,7 +22,7 @@ https://iseplutpinur.github.io/istanabuah/
 
 
 
-### Pengadaan
+## Pengadaan
 - Tambah Data
 	- Nama Suplier Tidak boleh kosong
 	- Jumlah Tidak boleh kosong
@@ -39,7 +39,7 @@ https://iseplutpinur.github.io/istanabuah/
 
 
 
-### Penjualan
+## Penjualan
 - Tambah Data
 	- Menambah data penjualan
 	- Jumlah tidak boleh lebih dari stok yang sudah ada
@@ -54,7 +54,7 @@ https://iseplutpinur.github.io/istanabuah/
 
 
 
-### Stok Buah
+## Stok Buah
 - Lihat Data
 	- Menampilkan data dalam bentuk tabel
 
