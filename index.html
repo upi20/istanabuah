@@ -690,11 +690,13 @@
 		var cek = cekStok(id_buah.value) - inputJml;
 		if (cek < 0){
 			alertFun("pj", "#f44336", "Stok Kurang Mohon Kurangi Jumlah penjualan<br>Stok <b>" +
-				mb_nama[id_buah.value] + "</b> Yang tersedia adalah <b>" + cekStok(id_buah.value) + "<b>");
-			simpanButton("pj");
+			mb_nama[id_buah.value] + "</b> Yang tersedia adalah <b>" + cekStok(id_buah.value) + "<b>");
+			if (x == "") simpanButton("pj");
+			else simpanButton("pj" + x);
 		} else {
 			alertFun();
-			simpanButton("pj", true);
+			if (x == "") simpanButton("pj", true);
+			else simpanButton("pj" + x, true);
 		}
 	}
 
@@ -715,6 +717,8 @@
 		} else return true;
 	}
 
+	// simpanButton("pd_buah");
+	getById("simpan_pd_ubah").setAttribute('disabled', '');
 	function simpanButton(y = "pd", x = false){
 		if (x) getById("simpan_" + y).removeAttribute('disabled');
 		else getById("simpan_" + y).setAttribute('disabled', '');
@@ -821,19 +825,20 @@
 			mb_harga_beli = hapusArr(mb_harga_beli, x);
 			mFun("_master_buah");
 			var html = "Sukses.. !, Data <b>" + temp[0] + "</b> Berhasil dihapus..!<br>";
-			if (temp[3] > 0) html += temp[3] + " Data <b>Pengadaan</b> ";
+			if (temp[3] > 0) html += temp[3] + " Data <b>" + temp[0] + "</b> Pada tabel <a href=\"#\" onclick=\"mFun('_pengadaan')\"><b>Pengadaan</b></a>";
 			if (temp[3] > 0 && temp[4] > 0) html += "dan ";
-			if (temp[4] > 0) html += temp[4] + " Data <b>Penjualan</b> ";
+			if (temp[4] > 0) html += temp[4] + " Data <b>" + temp[0] + "</b> Pada tabel <a href=\"#\" onclick=\"mFun('_penjualan')\"><b>Penjualan</b></a>";
 			if (temp[3] > 0 || temp[4] > 0)html += "Ikut terhapus";
 			alertMb(html, "#008CBA");
 		} else {
 			temp[0] = mb_nama[x];
 			temp[1] = x;
 			alertMb("<b>Peringatan..!</b>, Mengubah data ini akan mengubah data pada tabel lain."
-				+ "<br>Data <b>" + mb_nama[x] + "</b> Pada tabel <b>Pengadaan</b> dan <b>Penjualan</b> Akan ikut terhapus."
+				+ "<br>Seluruh Data Transaksi <b>" + mb_nama[x] + "</b> Pada tabel <a href=\"#\" onclick=\"mFun('_pengadaan')\"><b>Pengadaan</b></a> "
+				+ "dan <a href=\"#\" onclick=\"mFun('_penjualan')\"><b>Penjualan</b></a> Akan ikut terhapus."
 				+ "<br>Apakah anda yakin data <b>" + mb_nama[x] + "</b> Akan dihapus..? <br>"
-				+ "<button class=\"btn btn-merah\"onclick=\"hapusDataMb(" + temp[1] + ",'hapusDataMbAct',)\">Ya</button> Atau "
-				+ "<button class=\"btn btn-hitam\"onclick=\"mFun('_master_buah')\">Tidak</button>");
+				+ "<button class=\"btn btn-merah\" onclick=\"hapusDataMb(" + temp[1] + ",'hapusDataMbAct',)\">Ya</button> Atau "
+				+ "<button class=\"btn btn-hitam\" onclick=\"mFun('_master_buah')\">Tidak</button>");
 		}
 	}
 
@@ -874,15 +879,25 @@
 			pd_qty = hapusArr(pd_qty, x);
 			pd_nama = hapusArr(pd_nama, x);
 			mFun("_pengadaan");
-			alertFun("pd", "#008CBA", "Sukses.. !, Data <b>" + temp[0] + "</b> Berhasil dihapus..!");
+			alertFun("pd", "#008CBA", "Sukses.. !, Data suplier <b>" + pd_nama[x] + "</b> Berhasil dihapus..!");
+		} else if (relationPdHapus(x) < 0){
+			alertFun("pd","#f44336" , "<b>Peringatan..!</b><br> "
+				+ "Data buah <b>" + mb_nama[pd_buah[x]] + "</b> dari suplier <b>" + pd_nama[x] + "</b> tidak bisa dihapus karena sudah terkait "
+				+ "pada tabel <a href=\"#\" onclick=\"mFun('_pengadaan')\"><b>Pengadaan</b></a> atau bisa menyebaban stok data buah <b>" + mb_nama[pd_buah[x]] + "</b> menjadi <b>" + relationPdHapus(x) + "</b> "
+				+ "untuk menghapus data ini silahkan hapus transaksi pada tabel penjualan "
+ 				+ "agar pada saat data buah <b>" + mb_nama[pd_buah[x]] + "</b> ini di hapus stoknya tidak menjadi <b>" + relationPdHapus(x) + "</b>");
 		} else {
 			temp[0] = pd_nama[x];
 			temp[1] = x;
 			alertFun("pd","#f44336" , "<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain."
-				+ "<br>Apakah anda yakin data <b>" + pd_nama[x] + "</b> Akan dihapus..? <br>"
-				+ "<button class=\"btn btn-merah\"onclick=\"hapusDataPd(" + temp[1] + ",'hapusDataPd',)\">Ya</button> Atau "
-				+ "<button class=\"btn btn-hitam\"onclick=\"mFun('_master_buah')\">Tidak</button>");
+				+ "<br>Apakah anda yakin data buah <b>" + pd_nama[x] + "</b> Akan dihapus..? <br>"
+				+ "<button class=\"btn btn-merah\" onclick=\"hapusDataPd(" + temp[1] + ",'hapusDataPd',)\">Ya</button> Atau "
+				+ "<button class=\"btn btn-hitam\" onclick=\"mFun('_pengadaan')\">Tidak</button>");
 		}
+	}
+
+	function relationPdHapus(x){
+		return cekStok(pd_buah[x]) - pd_qty[x];
 	}
 
 	function hapusDataPj(x, y = ""){
@@ -897,8 +912,8 @@
 			temp[1] = x;
 			alertFun("pd","#f44336" , "<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain."
 				+ "<br>Apakah anda yakin data <b>" + pj_nama[x] + "</b> Akan dihapus..? <br>"
-				+ "<button class=\"btn btn-merah\"onclick=\"hapusDataPj(" + temp[1] + ",'hapusDataPj',)\">Ya</button> Atau "
-				+ "<button class=\"btn btn-hitam\"onclick=\"mFun('_master_buah')\">Tidak</button>");
+				+ "<button class=\"btn btn-merah\" onclick=\"hapusDataPj(" + temp[1] + ",'hapusDataPj',)\">Ya</button> Atau "
+				+ "<button class=\"btn btn-hitam\" onclick=\"mFun('_penjualan')\">Tidak</button>");
 		}
 	}
 
@@ -918,8 +933,6 @@
 	function hideMenu(x){
 		getById(x).setAttribute('style', 'display: none;');
 	}
-	// konfirmasi ketika pengandaan buah dihapus yang sudah ada pembelinya
-	// konfirmasi master buah ketika dihapus yang buahnya sudah ada pembelinya
 
 //ubah data
 	//Master buah
