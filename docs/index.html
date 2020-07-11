@@ -77,7 +77,15 @@
 		a{
 			text-decoration: none;
 			color: #008CBA;
+			padding: 3px;
 		}
+		a:hover{
+			background-color: #008CBA;
+			color: #fff;
+			padding: 3px;
+			border-radius: 3px;
+		}
+
 		.a-active{
 			background-color: #008CBA;
 			color: #fff;
@@ -87,12 +95,64 @@
 	</style>
 </head>
 <body>
-	<h1 id="title">Toko Istana Buah</h1>
-	<h3>Dibuat Oleh: Isep Lutpi Nur</h3>
+	<div id="headerPage">
+		<h1 id="title">Toko Istana Buah</h1>
+		<h3>Dibuat Oleh: Isep Lutpi Nur</h3>
+	</div>
+	<div id="d_tentang" style="display: none;">
+		<table class="form" style="max-width: 500px;">
+			<tr>
+				<td colspan="3" style="text-align: center;"><h2>Aplikasi Toko Istana buah</h2></td>
+			</tr>
+			<tr>
+				<td colspan="3"><p>Aplikasi sangat sederhana ini bertujuan untuk mengelola toko buah, menggunakan 1 halaman dengan html dan javascrip/ Dibuat dari soal Ujian akhir semester</p></td>
+			</tr>
+			<tr>
+				<td>Dibuat Oleh</td>
+				<td>:</td>
+				<td>Isep Lutpi Nur</td>
+			</tr>
+			<tr>
+				<td>Versi</td>
+				<td>:</td>
+				<td>1.0</td>
+			</tr>
+			<tr>
+				<td>Tanggal</td>
+				<td>:</td>
+				<td>Sabtu, 11 juli 2020</td>
+			</tr>
+			<tr>
+				<td colspan="3" style="text-align: center;"><br>Kontak:</td>
+			</tr>
+			<tr>
+				<td>Whatsapp</td>
+				<td>:</td>
+				<td><a href="https://api.whatsapp.com/send?phone=+6285798132505" target="_blank">085798132505</a></td>
+			</tr>
+			<tr>
+				<td>Telegram</td>
+				<td>:</td>
+				<td><a href="https://t.me/+6285798132505" target="blank">085798132505</a></td>
+			</tr>
+			<tr>
+				<td>Facebook</td>
+				<td>:</td>
+				<td><a href="https://facebook.com/iseplutpinur7" target="blank">Isef Lutfi Nur</a></td>
+			</tr>
+			<tr>
+				<td>Github</td>
+				<td>:</td>
+				<td><a href="https://github.com/iseplutpinur" target="blank">Isep Lutpi Nur</a></td>
+			</tr>
+		</table>
+		<br><br>
+	</div>
 	<a href="#" id="m_master_buah">Master Buah</a> |
 	<a href="#" id="m_pengadaan">Pengadaan</a> |
 	<a href="#" id="m_penjualan">Penjualan</a> |
-	<a href="#" id="m_stok_buah">Stok Buah</a>
+	<a href="#" id="m_stok_buah">Stok Buah</a> |
+	<a href="#" id="m_tentang">Tentang</a>
 	<div id="d_master_buah" style="display: none;">
 		<table class="form" id="d_master_buah_tambah">
 			<tr>
@@ -482,13 +542,15 @@
 	var d_pengadaan = getById("d_pengadaan");
 	var d_penjualan = getById("d_penjualan");
 	var d_stok_buah = getById("d_stok_buah");
+	var d_tentang = getById("d_tentang");
 
 // variable untuk mengatur dispaly
 	var con_menu = [
 	"_master_buah",
 	"_pengadaan",
 	"_penjualan",
-	"_stok_buah"
+	"_stok_buah",
+	"_tentang"
 	];
 
 // click
@@ -496,6 +558,7 @@
 	m_pengadaan.addEventListener("click", function(){ mFun("_pengadaan"); });
 	m_penjualan.addEventListener("click", function(){ mFun("_penjualan"); });
 	m_stok_buah.addEventListener("click", function(){ mFun("_stok_buah"); });
+	m_tentang.addEventListener("click", function(){ mFun("_tentang"); headerPage(0);});
 	title.addEventListener("click", function(){ visibility(); });
 	simpan_pd.addEventListener("click", function(){ simpan_Fun(); });
 	simpan_pj.addEventListener("click", function(){ simpan_Fun("pj"); });
@@ -523,12 +586,14 @@
 			hideMenu("d_master_buah_ubah");
 			showMenu("d_master_buah_tambah");
 			alertMb();
+			headerPage();
 		} else if (x == "_pengadaan") { 
 			_pengadaanFun(x);
 			refreshBuah("pd");
 			refreshBuah("pd_ubah");
 			hideMenu("d_pengadaan_ubah");
 			showMenu("d_pengadaan_tambah");
+			headerPage();
 		} else if (x == "_penjualan") {
 			_penjualanFun(x);
 			refreshBuah("pj");
@@ -536,10 +601,12 @@
 			validasiPj();
 			hideMenu("d_penjualan_ubah");
 			showMenu("d_penjualan_tambah");
+			headerPage();
 		}
 		else if (x == "_stok_buah") {
 			_stok_buahFun(x);
 			alertFun();
+			headerPage();
 		}
 	}
 
@@ -913,5 +980,10 @@
 		pj_qty[id_pj_ubah.value] = Number(jumlah_pj_ubah.value);
 		mFun("_penjualan");
 		showMenu("d_penjualan_tambah");
+	}
+
+	function headerPage(x = 1){
+		if (x == 0) getById("headerPage").setAttribute('style', 'display: none;');
+		else getById("headerPage").removeAttribute('style');
 	}
 </script>
