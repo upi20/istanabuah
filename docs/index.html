@@ -20,19 +20,19 @@
 
 		table td, table th{
 		  border: 1px solid #ddd;
-		  padding: 10px;
+		  padding: 5px;
 		  text-align: left;
 		}
 
 		table th{
 			text-align: left;
 			background-color: #4CAF50;
-			color: white;
+			color: #fff;
 			padding-top: 12px;
 			padding-bottom: 12px;
 			text-align: center;
 			background-color: #4CAF50;
-			color: white;
+			color: #fff;
 		}
 		table tr:hover{ background: rgba(0,0,0,0.1); }
 		table tr:nth-child(even){ background: #ddd; }
@@ -48,7 +48,41 @@
 		.form tr, .form tr td{
 			background: #fff;
 			border: 0px;
-			padding: 0px;
+			padding: 1px;
+		}
+
+		.btn{
+			border: none;
+			color: #fff;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			padding: 5px;
+			margin: 1px;
+			border-radius: 3px;
+			cursor: pointer;
+		}
+		.btn:hover{
+			background: #fff;
+			color: #000;
+			padding: 4px;
+			border: solid 1px #000;
+		}
+		.btn-hijau{ background-color: #4CAF50;}
+		.btn-biru{ background-color: #008CBA;}
+		.btn-merah{ background-color: #f44336;}
+		.btn-hitam{ background-color: #555555;}
+
+		a{
+			text-decoration: none;
+			color: #008CBA;
+		}
+		.a-active{
+			background-color: #008CBA;
+			color: #fff;
+			padding: 3px;
+			border-radius: 3px;
 		}
 	</style>
 </head>
@@ -92,7 +126,7 @@
 			<tr>
 				<td></td>
 				<td style="width: 1px;"></td>
-				<td><button id="simpan_mb">Simpan</button></td>
+				<td><button class="btn btn-biru" id="simpan_mb">Simpan</button></td>
 			</tr>
 		</table>
 		<table class="form" id="d_master_buah_ubah">
@@ -127,10 +161,10 @@
 			<tr>
 				<td></td>
 				<td style="width: 1px;"></td>
-				<td><button id="simpan_mb_ubah">Simpan</button><button id="kembali_mb_ubah">Kembali</button></td>
+				<td><button class="btn btn-biru" id="simpan_mb_ubah">Simpan</button><button class="btn btn-hitam" id="kembali_mb_ubah">Kembali</button></td>
 			</tr>
 		</table>
-		<br><span style="color: #f00;" id="pemberitahuan_mb"></span><br>
+		<br><span style="color: #f44336;" id="pemberitahuan_mb"></span><br>
 		<div id="d_master_buah_main"></div>
 	</div>
 	<div id="d_pengadaan" style="display: none;">
@@ -168,7 +202,7 @@
 			<tr>
 				<td></td>
 				<td style="width: 1px;"></td>
-				<td><button id="simpan_pd">Simpan</button></td>
+				<td><button class="btn btn-biru" id="simpan_pd">Simpan</button></td>
 			</tr>
 		</table>
 		<table class="form" id="d_pengadaan_ubah">
@@ -205,10 +239,10 @@
 			<tr>
 				<td></td>
 				<td style="width: 1px;"></td>
-				<td><button id="simpan_pd_ubah">Simpan</button><button id="kembali_pd_ubah">Kembali</button></td>
+				<td><button class="btn btn-biru" id="simpan_pd_ubah">Simpan</button><button class="btn btn-hitam" id="kembali_pd_ubah">Kembali</button></td>
 			</tr>
 		</table>
-		<br><span style="color: #f00;" id="pemberitahuan_pd"></span><br>
+		<br><span style="color: #f44336;" id="pemberitahuan_pd"></span><br>
 		<div id="d_pengadaan_main"></div>
 	</div>
 	<div id="d_penjualan" style="display: none;">
@@ -246,7 +280,7 @@
 			<tr>
 				<td></td>
 				<td style="width: 1px;"></td>
-				<td><button id="simpan_pj">Simpan</button></td>
+				<td><button class="btn btn-biru" id="simpan_pj">Simpan</button></td>
 			</tr>
 		</table>
 		<table class="form" id="d_penjualan_ubah">
@@ -283,10 +317,10 @@
 			<tr>
 				<td></td>
 				<td style="width: 1px;"></td>
-				<td><button id="simpan_pj_ubah">Simpan</button><button id="kembali_pj_ubah">Kembali</button></td>
+				<td><button class="btn btn-biru" id="simpan_pj_ubah">Simpan</button><button class="btn btn-hitam" id="kembali_pj_ubah">Kembali</button></td>
 			</tr>
 		</table>
-		<br><span style="color: #f00;" id="pemberitahuan_pj"></span><br>
+		<br><span style="color: #f44336;" id="pemberitahuan_pj"></span><br>
 		<div id="d_penjualan_main"></div>
 	</div>
 	<div id="d_stok_buah" style="display: none;"></div>
@@ -295,7 +329,7 @@
 <script>
 // title main
 	const title = getById("title");
-	var temp = "";
+	var temp = [];
 
 // variable data
 	// master buah
@@ -349,10 +383,11 @@
 			+ "</td><td>" +  mb_nama[i]
 			+ "</td><td class='tright'>" + mb_harga_jual[i]
 			+ "</td><td class='tright'>" + mb_harga_beli[i]
-			+ "</td><td class='tright'><button type=\"button\" onclick=\"hapusDataMb(" + i + ")\">Hapus</button>"
-			+ "<button type=\"button\" onclick=\"ubahDataMb(" + i + ")\">Ubah</button>"
+			+ "</td><td class='tright'><button class=\"btn btn-merah\" type=\"button\" onclick=\"hapusDataMb(" + i + ")\">Hapus</button>"
+			+ "<button class=\"btn btn-biru\" type=\"button\" onclick=\"ubahDataMb(" + i + ")\">Ubah</button>"
 			+ "</td></tr>";
 		}
+		if(mb_nama.length == 0) html1 += "<tr><td style=\"text-align: center;\" colspan=\"5\">Data Tidak Tersedia</td></tr>";
 		html1 += "</tbody></table>";
 		htmlById("d" + x + "_main", html1);
 	}
@@ -368,10 +403,11 @@
 			+ "</td><td class='tright'>" +  mb_harga_jual[pd_buah[i]] 
 			+ "</td><td class='tright'>" + pd_qty[i]
 			+ "</td><td class='tright'>" + (pd_qty[i] * mb_harga_jual[pd_buah[i]])
-			+ "</td><td class='tright'><button type=\"button\" onclick=\"hapusDataPd(" + i + ")\">Hapus</button>"
-			+ "<button type=\"button\" onclick=\"ubahDataPd(" + i + ")\">Ubah</button>"
+			+ "</td><td class='tright'><button class=\"btn btn-merah\" type=\"button\" onclick=\"hapusDataPd(" + i + ")\">Hapus</button>"
+			+ "<button class=\"btn btn-biru\" type=\"button\" onclick=\"ubahDataPd(" + i + ")\">Ubah</button>"
 			+ "</td></tr>";
 		}
+		if(pd_nama.length == 0) html1 += "<tr><td style=\"text-align: center;\" colspan=\"7\">Data Tidak Tersedia</td></tr>";
 		html1 += "</tbody></table>";
 		htmlById("d" + x + "_main", html1);
 	}
@@ -387,10 +423,11 @@
 			+ "</td><td class='tright'>" +  mb_harga_jual[pj_buah[i]] 
 			+ "</td><td class='tright'>" + pj_qty[i]
 			+ "</td><td class='tright'>" + (pj_qty[i] * mb_harga_jual[pj_buah[i]])
-			+ "</td><td class='tright'><button type=\"button\" onclick=\"hapusDataPj(" + i + ")\">Hapus</button>"
-			+ "<button type=\"button\" onclick=\"ubahDataPj(" + i + ")\">Ubah</button>"
+			+ "</td><td class='tright'><button class=\"btn btn-merah\" type=\"button\" onclick=\"hapusDataPj(" + i + ")\">Hapus</button>"
+			+ "<button class=\"btn btn-biru\" type=\"button\" onclick=\"ubahDataPj(" + i + ")\">Ubah</button>"
 			+ "</td></tr>";
 		}
+		if(pj_nama.length == 0) html1 += "<tr><td style=\"text-align: center;\" colspan=\"7\">Data Tidak Tersedia</td></tr>";
 		html1 += "</tbody></table>";
 		htmlById("d" + x + "_main", html1);
 	}
@@ -407,6 +444,7 @@
 			+ "</td><td class='tright'>" + zeroHide(cekStok(i))
 			+ "</td></tr>";
 		}
+		if(mb_nama.length == 0) html1 += "<tr><td style=\"text-align: center;\" colspan=\"5\">Data Tidak Tersedia</td></tr>";
 		html1 += "</tbody></table>";
 		htmlById("d" + x, html1);
 	}
@@ -468,10 +506,12 @@
 			if(con_menu[i] != x) {
 				getById("d" + con_menu[i]).setAttribute('style', 'display: none;');
 				getById("m" + con_menu[i]).setAttribute('href', '#');
+				getById("m" + con_menu[i]).removeAttribute('class'); 
 			}
 			else {
 				getById("d" + con_menu[i]).removeAttribute('style'); 
 				getById("m" + con_menu[i]).removeAttribute('href');
+				getById("m" + con_menu[i]).setAttribute('class', 'a-active');
 			}
 		}
 	}
@@ -481,18 +521,21 @@
 		if (x == "_master_buah") {
 			_master_buahFun(x);
 			hideMenu("d_master_buah_ubah");
+			showMenu("d_master_buah_tambah");
 			alertMb();
 		} else if (x == "_pengadaan") { 
 			_pengadaanFun(x);
 			refreshBuah("pd");
 			refreshBuah("pd_ubah");
 			hideMenu("d_pengadaan_ubah");
+			showMenu("d_pengadaan_tambah");
 		} else if (x == "_penjualan") {
 			_penjualanFun(x);
 			refreshBuah("pj");
 			refreshBuah("pj_ubah");
 			validasiPj();
 			hideMenu("d_penjualan_ubah");
+			showMenu("d_penjualan_tambah");
 		}
 		else if (x == "_stok_buah") {
 			_stok_buahFun(x);
@@ -548,16 +591,16 @@
 			getById("nama_buah_no_" + x).value = 0;
 			getById("nama_" + x).value = "";
 			getById("jumlah_" + x).value = "";
-			alertFun(x, "#00f", "Berhasil disimpan..!");
+			alertFun(x, "#008CBA", "Berhasil disimpan..!");
 			//reload
 			if (x == "pd" || x == "pd_ubah") mFun("_pengadaan");
 			else mFun("_penjualan");
 		} else {
-			alertFun(x, "#f00", "Tidak boleh ada kolom yang kosong atau nol");
+			alertFun(x, "#f44336", "Tidak boleh ada kolom yang kosong atau nol");
 		}
 	}
 
-	function alertFun(x = true, y = "#f00", z = ""){
+	function alertFun(x = true, y = "#f44336", z = ""){
 		if (x) {
 			getById("pemberitahuan_pd").style.color = y;
 			getById("pemberitahuan_pd").innerHTML = z;
@@ -579,7 +622,7 @@
 		var inputJml = getById("jumlah_pj" + x).value;
 		var cek = cekStok(id_buah.value) - inputJml;
 		if (cek < 0){
-			alertFun("pj", "#f00", "Stok Kurang Mohon Kurangi Jumlah penjualan<br>Stok <b>" +
+			alertFun("pj", "#f44336", "Stok Kurang Mohon Kurangi Jumlah penjualan<br>Stok <b>" +
 				mb_nama[id_buah.value] + "</b> Yang tersedia adalah <b>" + cekStok(id_buah.value) + "<b>");
 			simpanButton("pj");
 		} else {
@@ -630,7 +673,7 @@
 			mb_harga_jual.push(Number(harga_jual_mb.value));
 			resetInMb();
 			mFun("_master_buah")
-			alertMb("Data berhasil ditambahkan..!", "#00f");
+			alertMb("Data berhasil ditambahkan..!", "#008CBA");
 
 		}
 	}
@@ -696,39 +739,62 @@
 		harga_jual_mb.value = "";
 	}
 
-	function alertMb(x = "", y = "#f00") {
+	function alertMb(x = "", y = "#f44336") {
 		getById("pemberitahuan_mb").style.color = y;
 		getById("pemberitahuan_mb").innerHTML = x;
 	}
 
 
 // hapus data
-	function hapusDataMb(x){
-		alertMb("<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain."
-			+ "<br>Apakah anda yakin data <b>" + mb_nama[x] + "</b> Akan dihapus..? <br>"
-			+ "<a href=\"#\" onclick=\"hapusDataMbAct(" + x + ")\">Ya<a> Atau "
-			+ "<a href=\"#\" onclick=\"mFun('_master_buah')\">Tidak<a>");
-		temp = mb_nama[x];
-	}
-	function hapusDataMbAct(x){
-		mb_nama = hapusArr(mb_nama, x);
-		mb_harga_jual = hapusArr(mb_harga_jual, x);
-		mb_harga_beli = hapusArr(mb_harga_beli, x);
-		mFun("_master_buah");
-		alertMb("Sukses.. !, Data <b>" + temp + "</b> Berhasil dihapus..!", "#00f");
-	}
-
-	function hapusDataPd(x){
-		pd_buah = hapusArr(pd_buah, x);
-		pd_qty = hapusArr(pd_qty, x);
-		pd_nama = hapusArr(pd_nama, x);
-		mFun("_pengadaan");
+	function hapusDataMb(x, y = ""){
+		if (y == "hapusDataMbAct"){
+			mb_nama = hapusArr(mb_nama, x);
+			mb_harga_jual = hapusArr(mb_harga_jual, x);
+			mb_harga_beli = hapusArr(mb_harga_beli, x);
+			mFun("_master_buah");
+			alertMb("Sukses.. !, Data <b>" + temp[0] + "</b> Berhasil dihapus..!", "#008CBA");
+		} else {
+			temp[0] = mb_nama[x];
+			temp[1] = x;
+			alertMb("<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain."
+				+ "<br>Apakah anda yakin data <b>" + mb_nama[x] + "</b> Akan dihapus..? <br>"
+				+ "<button class=\"btn btn-merah\"onclick=\"hapusDataMb(" + temp[1] + ",'hapusDataMbAct',)\">Ya</button> Atau "
+				+ "<button class=\"btn btn-hitam\"onclick=\"mFun('_master_buah')\">Tidak</button>");
+		}
 	}
 
-	function hapusDataPj(x){
-		pj_buah = hapusArr(pj_buah, x);
-		pj_qty = hapusArr(pj_qty, x);
-		pj_nama = hapusArr(pj_nama, x);
+	function hapusDataPd(x, y = ""){
+		if (y == "hapusDataPd") {
+			pd_buah = hapusArr(pd_buah, x);
+			pd_qty = hapusArr(pd_qty, x);
+			pd_nama = hapusArr(pd_nama, x);
+			mFun("_pengadaan");
+			alertFun("pd", "#008CBA", "Sukses.. !, Data <b>" + temp[0] + "</b> Berhasil dihapus..!");
+		} else {
+			temp[0] = pd_nama[x];
+			temp[1] = x;
+			alertFun("pd","#f44336" , "<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain."
+				+ "<br>Apakah anda yakin data <b>" + pd_nama[x] + "</b> Akan dihapus..? <br>"
+				+ "<button class=\"btn btn-merah\"onclick=\"hapusDataPd(" + temp[1] + ",'hapusDataPd',)\">Ya</button> Atau "
+				+ "<button class=\"btn btn-hitam\"onclick=\"mFun('_master_buah')\">Tidak</button>");
+		}
+	}
+
+	function hapusDataPj(x, y = ""){
+		if (y == "hapusDataPj") {
+			pj_buah = hapusArr(pj_buah, x);
+			pj_qty = hapusArr(pj_qty, x);
+			pj_nama = hapusArr(pj_nama, x);
+			mFun("_penjualan");
+			alertFun("pd", "#008CBA", "Sukses.. !, Data <b>" + temp[0] + "</b> Berhasil dihapus..!");
+		} else {
+			temp[0] = pj_nama[x];
+			temp[1] = x;
+			alertFun("pd","#f44336" , "<b>Peringatan..!</b><br>Mengubah data ini akan mengubah data pada tabel lain."
+				+ "<br>Apakah anda yakin data <b>" + pj_nama[x] + "</b> Akan dihapus..? <br>"
+				+ "<button class=\"btn btn-merah\"onclick=\"hapusDataPj(" + temp[1] + ",'hapusDataPj',)\">Ya</button> Atau "
+				+ "<button class=\"btn btn-hitam\"onclick=\"mFun('_master_buah')\">Tidak</button>");
+		}
 	}
 
 	function hapusArr(x, no) {
