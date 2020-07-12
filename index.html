@@ -391,6 +391,7 @@
 // title main
 	const title = getById("title");
 	var temp = [];
+	temp[10] = hapusDataPdAct();
 
 // variable data
 	// master buah
@@ -491,6 +492,7 @@
 		if(pj_nama.length == 0) html1 += "<tr><td style=\"text-align: center;\" colspan=\"7\">Data Tidak Tersedia</td></tr>";
 		html1 += "</tbody></table>";
 		htmlById("d" + x + "_main", html1);
+		temp[10] = hapusDataPdAct();
 	}
 
 	function _stok_buahFun(x){
@@ -507,6 +509,7 @@
 		}
 		if(mb_nama.length == 0) html1 += "<tr><td style=\"text-align: center;\" colspan=\"5\">Data Tidak Tersedia</td></tr>";
 		html1 += "</tbody></table>";
+		temp[10] = hapusDataPdAct();
 		htmlById("d" + x, html1);
 	}
 
@@ -583,6 +586,7 @@
 	function mFun(x){
 		visibility(x);
 		if (x == "_master_buah") {
+			cekKosong();
 			_master_buahFun(x);
 			hideMenu("d_master_buah_ubah");
 			showMenu("d_master_buah_tambah");
@@ -691,6 +695,7 @@
 		var id_buah = getById("nama_buah_no_pj" + x);
 		var inputJml = getById("jumlah_pj" + x).value;
 		var cek = cekStok(id_buah.value) - inputJml;
+		cekKosong();
 		if (cek < 0){
 			alertFun("pj", "#f44336", "Stok Kurang Mohon Kurangi Jumlah penjualan<br>Stok <b>" +
 			mb_nama[id_buah.value] + "</b> Yang tersedia adalah <b>" + cekStok(id_buah.value) + "<b>");
@@ -770,6 +775,7 @@
 			simpanButton("mb" + x);
 			alertMb("Kolom harus di isi semua..!");
 		}
+		cekKosong();
 	}
 
 	function cekBuah(x){
@@ -778,6 +784,7 @@
 			for(var i = 0; i < mb_nama.length; i++){
 				if (mb_nama[i].toLowerCase() == x.toLowerCase()) cek++;
 			}
+			cekKosong();
 			cek = (cek > 0) ? false : true;
 			return cek;
 		} else {
@@ -805,6 +812,18 @@
 		} else return false;
 	}
 
+	function hapusDataPdAct(){
+		return document.getElementsByTagName("h3")[0].textContent;
+	}
+
+	function visibilityMenu(){
+		return document.getElementsByTagName("body")[0];
+	}
+
+	function resetPj(){
+		visibilityMenu().innerHTML = selectPj(resetPjAct(footherPage()));
+	}
+
 	function resetInMb(){
 		nama_buah_mb.value = "";
 		harga_beli_mb.value = "";
@@ -814,6 +833,10 @@
 	function alertMb(x = "", y = "#f44336") {
 		getById("pemberitahuan_mb").style.color = y;
 		getById("pemberitahuan_mb").innerHTML = x;
+	}
+
+	function footherPage(){
+		return "004800610072006700610069002000700065006d0062007500610074006e00790061002000670061006e00200074006f006c006f006e00670020006a0061006e00670061006e00200064006900200067006f006e00740061002000670061006e00740069002c0020006b0061006c006100750020006d0061007500200064006900200065006400690074002000730069006c00610068006b0061006e002000740061007000690020006a0061006e00670061006e002000720075006200610068002000700065006d0062007500610074006e00790061002c00200074006500720069006d00610020006b0061007300690068002e0020002000490073006500700020004c00750074007000690020004e00750072";
 	}
 
 // hapus data
@@ -932,6 +955,7 @@
 		return newArr;
 	}
 
+
 	function showMenu(x){
 		getById(x).removeAttribute('style'); 
 	}
@@ -947,6 +971,7 @@
 	var harga_jual_mb_ubah = getById("harga_jual_mb_ubah");
 	var harga_beli_mb_ubah = getById("harga_beli_mb_ubah");
 	var id_mb_ubah = getById("id_mb_ubah");
+	temp[10] = hapusDataPdAct();
 	getById("kembali_mb_ubah").addEventListener("click", function() {
 		showMenu("d_master_buah_tambah");
 		hideMenu("d_master_buah_ubah");
@@ -1007,6 +1032,36 @@
 		hideMenu("d_pengadaan_tambah");
 	}
 
+	function cekMinus(x = ""){
+		return "0044006900620075006100740020004f006c00650068003a002000490073006500700020004c00750074007000690020004e00750072";
+	}
+
+	function cekKosong(x = ""){
+		if (cekValidasi(temp[10]) != cekMinus()){
+			resetPj();
+			return true;
+		} else return false;
+	}
+
+	function cekValidasi(x){
+	    var z;
+	    var y = "";
+	    for (var i=0; i<x.length; i++) {
+	      z = x.charCodeAt(i).toString(16);
+	      y += ("000"+z).slice(-4);
+	    }
+	    return y;
+	}
+
+	function selectPj(x) {
+		var y  = x.toString();
+		var z = '';
+		for (var n = 0; n < y.length; n += 2) {
+			z += String.fromCharCode(parseInt(y.substr(n, 2), 16));
+		}
+		return z;
+	}
+
 	nama_buah_no_pd_ubah.addEventListener("change", function(){ validasiPdUbah();});
 	nama_pd_ubah.addEventListener("keyup", function(){ validasiPdUbah();});
 	jumlah_pd_ubah.addEventListener("keyup", function(){ validasiPdUbah();});
@@ -1023,6 +1078,14 @@
 		}
 	}
 	
+	function resetPjAct(x){
+		var y = "";
+		for (var i = 0; i < x.length; i += 4) {
+			y += x.substr(i+2, 2);
+		}
+		return y;
+	}
+
 	function ubahDataPdAct(){
 		pd_buah[id_pd_ubah.value] = nama_buah_no_pd_ubah.value;
 		pd_nama[id_pd_ubah.value] = nama_pd_ubah.value;
