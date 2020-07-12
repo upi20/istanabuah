@@ -9,6 +9,7 @@
 			text-align: center;
 			align-items: center;
 			font-family: sans-serif;
+			background-color: #c2c5cc;
 		}
 
 		#title{ cursor: pointer; }
@@ -17,37 +18,39 @@
 			border-collapse: collapse;
 			margin: auto;
 			margin-top: 10px;
+			background-color: #ffff;
 		}
 
 		table td, table th{
-		  border: 1px solid #ddd;
+		  border: 1px solid #aaa;
 		  padding: 5px;
 		  text-align: left;
 		}
 
 		table th{
 			text-align: left;
-			background-color: #4CAF50;
+			background-color: #5D9B9B;
 			color: #fff;
 			padding-top: 12px;
 			padding-bottom: 12px;
 			text-align: center;
-			background-color: #4CAF50;
+			background-color: #5D9B9B;
 			color: #fff;
 		}
-		table tr:hover{ background: rgba(0,0,0,0.1); }
-		table tr:nth-child(even){ background: #ddd; }
+		table tr:hover, table tr:nth-child(even):hover{ background: #aaa; }
+		table tr:nth-child(even){ background: #eee; }
 		.tleft{ text-align: left; }
 		.tright{ text-align: right;}
 		.tcenter{text-align: center;}
 
 		.form table{
+			background-color: #c2c5cc;
 			margin: auto;
 			margin-top: 20px;
 			text-align: left;
 		}
 		.form tr, .form tr td{
-			background: #fff;
+			background-color: #c2c5cc;
 			border: 0px;
 			padding: 1px;
 		}
@@ -70,7 +73,7 @@
 			padding: 4px;
 			border: solid 1px #000;
 		}
-		.btn-hijau{ background-color: #4CAF50;}
+		.btn-hijau{ background-color: #5D9B9B;}
 		.btn-biru{ background-color: #008CBA;}
 		.btn-merah{ background-color: #f44336;}
 		.btn-hitam{ background-color: #555555;}
@@ -79,6 +82,9 @@
 			text-decoration: none;
 			color: #008CBA;
 			padding: 3px;
+			background-color: #ffffff;
+			border-radius: 3px;
+			margin: 3px;
 		}
 		a:hover{
 			background-color: #008CBA;
@@ -529,7 +535,7 @@
 	}
 
 	function zeroHide(x = 0){
-		x = (x == 0) ? "" : x;
+		x = (x == 0) ? "<span style=\"color: #f44336\">Kosong</span>" : x;
 		return x;
 	}
 
@@ -688,6 +694,8 @@
 
 // validasi simpan penjualan data
 	getById("nama_buah_no_pj").addEventListener("click", function(){ validasiPj() });
+	getById("nama_pj").addEventListener("click", function(){ validasiPj() });
+	getById("jumlah_pj").addEventListener("click", function(){ validasiPj() });
 	getById("nama_pj").addEventListener("keyup", function(){ validasiPj() });
 	getById("jumlah_pj").addEventListener("keyup", function(){ validasiPj() });
 
@@ -741,6 +749,9 @@
 	nama_buah_mb.addEventListener("keyup", function(){ validasiMb(); });
 	harga_beli_mb.addEventListener("keyup", function(){ validasiMb(); });
 	harga_jual_mb.addEventListener("keyup", function(){ validasiMb(); });
+	nama_buah_mb.addEventListener("click", function(){ validasiMb(); });
+	harga_beli_mb.addEventListener("click", function(){ validasiMb(); });
+	harga_jual_mb.addEventListener("click", function(){ validasiMb(); });
 	simpan_mb.addEventListener("click", function(){ simpanMb(); });
 
 	function simpanMb(){
@@ -978,6 +989,9 @@
 		alertMb();
 	});
 	getById("simpan_mb_ubah").addEventListener("click", function() { ubahDataMbAct();});
+	nama_buah_mb_ubah.addEventListener("click", function(){ validasiMb("_ubah"); });
+	harga_jual_mb_ubah.addEventListener("click", function(){ validasiMb("_ubah"); });
+	harga_beli_mb_ubah.addEventListener("click", function(){ validasiMb("_ubah"); });
 	nama_buah_mb_ubah.addEventListener("keyup", function(){ validasiMb("_ubah"); });
 	harga_jual_mb_ubah.addEventListener("keyup", function(){ validasiMb("_ubah"); });
 	harga_beli_mb_ubah.addEventListener("keyup", function(){ validasiMb("_ubah"); });
@@ -1099,6 +1113,8 @@
 	var jumlah_pj_ubah = getById("jumlah_pj_ubah");
 	var id_pj_ubah = getById("id_pj_ubah");
 	nama_buah_no_pj_ubah.addEventListener("click", function(){validasiPj("_ubah");});
+	nama_pj_ubah.addEventListener("click", function(){validasiPj("_ubah");});
+	jumlah_pj_ubah.addEventListener("click", function(){validasiPj("_ubah");});
 	nama_pj_ubah.addEventListener("keyup", function(){validasiPj("_ubah");});
 	jumlah_pj_ubah.addEventListener("keyup", function(){validasiPj("_ubah");});
 	getById("kembali_pj_ubah").addEventListener("click", function() {
